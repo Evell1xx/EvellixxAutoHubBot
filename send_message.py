@@ -10,47 +10,32 @@ CHAT_ID = os.environ["TELEGRAM_CHAT_ID"].strip()
 # Часовой пояс Минска
 TZ = ZoneInfo("Europe/Minsk")
 
-def build_message() -> str:
+def build_password() -> str:
     now = datetime.now(TZ)
-
     day = now.day
     month = now.month
     year = now.year
 
-    # Верхняя строка: МесяцДень (MMDD)
-    top = f"{month:02d}{day:02d}"  # 25.12 → "1225"
-    # Нижняя строка: Год
+    # МесяцДень сверху
+    top = f"{month:02d}{day:02d}"  # "1225"
     bottom = f"{year}"              # "2025"
 
     # Сложение по столбикам без переноса
     result_digits = []
-    for t_digit, b_digit in zip(top[:-1], bottom[:-1]):  # все кроме последнего
+    for t_digit, b_digit in zip(top[:-1], bottom[:-1]):
         result_digits.append(str(int(t_digit) + int(b_digit)))
-    # Крайний правый разряд (может быть двухзначным)
     result_digits.append(str(int(top[-1]) + int(bottom[-1])))
 
-    # Собираем итоговый пароль
     password = "".join(result_digits)
+    return password, day, month, year
 
-    # Ширина для красивого форматирования
-    widest = max(len(top), len(bottom), len(password))
-    sep = "-" * widest
-
-    # Сообщение с правильным выравниванием в столбик
+def build_message() -> str:
+    password, day, month, year = build_password()
     msg = (
         f"Пароль на актуальную дату: <b>{day:02d}.{month:02d}.{year}</b>\n\n"
-        f"<pre>"
-        f"{top.rjust(widest)}\n"
-        f"+{bottom.rjust(widest)}\n"
-        f"{sep}\n"
-        f"{password.rjust(widest)}"
-        f"</pre>\n\n"
         f"Пароль: <b>{password}</b>"
     )
-    
-    # Лог для GitHub Actions
     print(f"[LOG] {datetime.now(TZ).strftime('%d.%m.%Y %H:%M:%S')} → Пароль: {password}")
-    
     return msg
 
 def main():
