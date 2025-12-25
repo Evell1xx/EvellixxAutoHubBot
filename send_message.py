@@ -5,8 +5,8 @@ from zoneinfo import ZoneInfo  # доступно в Python 3.9+
 
 
 # Токен бота и ID чата берём из переменных окружения (GitHub Secrets)
-TOKEN = 8260796784:AAEKBN14VgBilXiW-2Xmgs_fKyougStIgpc
-CHAT_ID = 2034051802
+TOKEN = "8260796784:AAEKBN14VgBilXiW-2Xmgs_fKyougStIgpc"
+CHAT_ID = "2034051802"
 
 # Часовой пояс — Минск
 TZ = ZoneInfo("Europe/Minsk")
@@ -52,7 +52,7 @@ def build_message() -> str:
 def main():
     text = build_message()
 
-    url = f"https://api.telegram.org/bot{8260796784:AAEKBN14VgBilXiW-2Xmgs_fKyougStIgpc}/sendMessage"
+url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
     payload = {
         "chat_id": CHAT_ID,
         "text": text,
