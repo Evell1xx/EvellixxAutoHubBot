@@ -3,9 +3,11 @@ from datetime import datetime
 from zoneinfo import ZoneInfo  # Python 3.9+
 import os
 
+# Берём токены из секретов и убираем лишние пробелы/переносы
 TOKEN = os.environ["TELEGRAM_BOT_TOKEN"].strip()
 CHAT_ID = os.environ["TELEGRAM_CHAT_ID"].strip()
 
+# Часовой пояс Минска
 TZ = ZoneInfo("Europe/Minsk")
 
 def build_message() -> str:
@@ -15,10 +17,10 @@ def build_message() -> str:
     month = now.month
     year = now.year
 
-    # МесяцДень сверху
-    top = f"{month:02d}{day:02d}"  # 12 25 -> "1225"
-    # Год снизу
-    bottom = f"{year}"             # "2025"
+    # Верхняя строка: МесяцДень (MMDD)
+    top = f"{month:02d}{day:02d}"  # 25.12 → "1225"
+    # Нижняя строка: Год
+    bottom = f"{year}"              # "2025"
 
     # Сложение по столбикам без переноса
     result_digits = []
@@ -27,9 +29,11 @@ def build_message() -> str:
     # Крайний правый разряд (может быть двухзначным)
     result_digits.append(str(int(top[-1]) + int(bottom[-1])))
 
-    result = "".join(result_digits)
+    # Собираем итоговый пароль
+    password = "".join(result_digits)
 
-    widest = max(len(top), len(bottom), len(result))
+    # Ширина для красивого форматирования
+    widest = max(len(top), len(bottom), len(password))
     sep = "-" * widest
 
     msg = (
@@ -38,9 +42,9 @@ def build_message() -> str:
         f"{top.rjust(widest)}\n"
         f"+{bottom.rjust(widest)}\n"
         f"{sep}\n"
-        f"{result.rjust(widest)}"
+        f"{password.rjust(widest)}"
         f"</pre>\n\n"
-        f"Пароль: <b>{result}</b>"
+        f"Пароль: <b>{password}</b>"
     )
     return msg
 
