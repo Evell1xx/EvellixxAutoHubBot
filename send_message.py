@@ -1,13 +1,12 @@
 import requests
 from datetime import datetime
-from zoneinfo import ZoneInfo  # Python 3.9+
+from zoneinfo import ZoneInfo  
 import os
 
-# Берём токены из секретов и убираем лишние пробелы/переносы
 TOKEN = os.environ["TELEGRAM_BOT_TOKEN"].strip()
 CHAT_ID = os.environ["TELEGRAM_CHAT_ID"].strip()
 
-# Часовой пояс Минска
+
 TZ = ZoneInfo("Europe/Minsk")
 
 def build_password() -> str:
@@ -16,11 +15,11 @@ def build_password() -> str:
     month = now.month
     year = now.year
 
-    # МесяцДень сверху
-    top = f"{month:02d}{day:02d}"  # "1225"
-    bottom = f"{year}"              # "2025"
+    
+    top = f"{month:02d}{day:02d}"  
+    bottom = f"{year}"              
 
-    # Сложение по столбикам без переноса
+  
     result_digits = []
     for t_digit, b_digit in zip(top[:-1], bottom[:-1]):
         result_digits.append(str(int(t_digit) + int(b_digit)))
