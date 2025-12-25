@@ -36,6 +36,7 @@ def build_message() -> str:
     widest = max(len(top), len(bottom), len(password))
     sep = "-" * widest
 
+    # Сообщение с правильным выравниванием в столбик
     msg = (
         f"Пароль на актуальную дату: <b>{day:02d}.{month:02d}.{year}</b>\n\n"
         f"<pre>"
