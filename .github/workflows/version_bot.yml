@@ -11,6 +11,7 @@ on:
 jobs:
   run-command:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
@@ -26,43 +27,5 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: |
-          python - <<EOF
-          import os
-          import requests
-
-          command = "${{ github.event.inputs.command }}"
-          token = os.environ["TELEGRAM_BOT_TOKEN"].strip()
-          chat_id = os.environ["TELEGRAM_CHAT_ID"].strip()
-
-          if command.lower() == "version":
-              text = """На данный момент актуальная версия VoyahOS для Рест/318 - 6.11.1, вот её описание:
-
-VOYAH OS 6.11.1 — реконструированный подробный changelog + технические пояснения
-
-1. Оптимизация стабилизации работы 360° камеры
-Исправлено:
- • рывки при повороте камеры в 3D-режиме;
- • повышена чёткость в тёмное время;
- • уменьшена задержка включения камеры;
- • исправлены редкие артефакты на боковых изображениях.
-Что это даёт:
-Камера включается стабильнее, изображение более плавное и точное, парковаться проще.
-
-2. Улучшена стабильность панели приборов и центрального экрана
-Исправлено:
- • иногда пропадающие данные: скорость, ассисты;
- • зависание при резком переключении экранов;
- • случайные мерцания при включении камеры;
- • ускорен вывод элементов интерфейса.
-Что это даёт:
-Приборка меньше лагает, интерфейс становится более живым и “лёгким”.
-
-... (текст можно вставить полностью)
-"""
-          else:
-              text = f"Команда {command} не найдена"
-
-          url = f"https://api.telegram.org/bot{token}/sendMessage"
-          requests.post(url, data={"chat_id": chat_id, "text": text, "parse_mode": "HTML"})
-          EOF
+          BOT_COMMAND: ${{ github.event.inputs.command }}
+        run: python commands.py
