@@ -1,12 +1,13 @@
-from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 import os
+import requests
 
-TOKEN = os.environ["TELEGRAM_BOT_TOKEN"].strip()
-CHAT_ID = os.environ["TELEGRAM_CHAT_ID"].strip()  # можно убрать, если отвечаем напрямую в чат команды
+# Получаем команду из переменной окружения
+command = os.environ.get("BOT_COMMAND", "").lower()
+token = os.environ["TELEGRAM_BOT_TOKEN"].strip()
+chat_id = os.environ["TELEGRAM_CHAT_ID"].strip()
 
-# Текст для команды /version
-VERSION_TEXT = """На данный момент актуальная версия VoyahOS для Рест/318 - 6.11.1, вот её описание:
+if command == "version":
+    text = """На данный момент актуальная версия VoyahOS для Рест/318 - 6.11.1, вот её описание:
 
 VOYAH OS 6.11.1 — реконструированный подробный changelog + технические пояснения
 
@@ -100,18 +101,10 @@ VOYAH OS 6.11.1 — реконструированный подробный chan
 • лучшая работа CAN
 • более плавная и быстрая система
 """
+else:
+    text = f"Команда {command} не найдена"
 
-# Обработчик команды /version
-async def version_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(VERSION_TEXT)
-
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Привет! Используй /version чтобы узнать актуальную версию VoyahOS.")
-
-# Основной запуск бота
-app = ApplicationBuilder().token(TOKEN).build()
-app.add_handler(CommandHandler("start", start))
-app.add_handler(CommandHandler("version", version_command))
-
-print("Command bot is running...")
-app.run_polling()
+url = f"https://api.telegram.org/bot{token}/sendMessage"
+resp = requests.post(url, data={"chat_id": chat_id, "text": text, "parse_mode": "HTML"})
+print("Status:", resp.status_code)
+print("Response:", resp.text)
