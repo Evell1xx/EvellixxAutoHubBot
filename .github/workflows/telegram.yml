@@ -1,27 +1,26 @@
-name: Telegram Bot
+name: telegram_bot
 
 on:
-  workflow_dispatch:
   schedule:
-    - cron: "0 6 * * *"   # каждый день в 06:00 UTC
+    - cron: "0 16 * * *"  # каждый день в 19:00 по Минску
+  workflow_dispatch:       # можно запускать вручную
 
 jobs:
   run-bot:
     runs-on: ubuntu-latest
-
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: '3.11'
 
       - name: Install dependencies
         run: pip install requests
 
       - name: Run bot
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python bot.py
