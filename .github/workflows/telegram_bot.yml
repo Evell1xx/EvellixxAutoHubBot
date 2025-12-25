@@ -1,16 +1,18 @@
 name: Telegram Bot
 
 on:
-  workflow_dispatch:        # ручной запуск для теста
   schedule:
-    - cron: "0 16 * * *"   # каждый день в 19:00 по Минску (UTC+3)
+    # Каждый день в 00:00 CST → 16:00 UTC предыдущего дня
+    - cron: "0 16 * * *"
+  workflow_dispatch:  # можно запускать вручную для теста
 
 jobs:
   run-bot:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
