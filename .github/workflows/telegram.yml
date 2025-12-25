@@ -1,9 +1,9 @@
 name: Telegram Bot
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:        # ручной запуск
   schedule:
-    - cron: "0 6 * * *"   # каждый день в 06:00 UTC
+    - cron: "0 16 * * *"   # каждый день в 19:00 по Минску (UTC+3)
 
 jobs:
   run-bot:
@@ -24,4 +24,4 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python bot.py
+        run: python send_message.py   # исправлено имя скрипта
