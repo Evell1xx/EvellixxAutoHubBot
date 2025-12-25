@@ -46,6 +46,10 @@ def build_message() -> str:
         f"</pre>\n\n"
         f"Пароль: <b>{password}</b>"
     )
+    
+    # Лог для GitHub Actions
+    print(f"[LOG] {datetime.now(TZ).strftime('%d.%m.%Y %H:%M:%S')} → Пароль: {password}")
+    
     return msg
 
 def main():
