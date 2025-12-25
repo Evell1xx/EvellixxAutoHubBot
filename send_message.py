@@ -7,7 +7,7 @@ TOKEN = os.environ["TELEGRAM_BOT_TOKEN"].strip()
 CHAT_ID = os.environ["TELEGRAM_CHAT_ID"].strip()
 
 
-TZ = ZoneInfo("Europe/Minsk")
+TZ = ZoneInfo("Asia/Shanghai")
 
 def build_password() -> str:
     now = datetime.now(TZ)
