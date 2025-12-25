@@ -2,8 +2,11 @@ import requests
 from datetime import datetime
 from zoneinfo import ZoneInfo  # Python 3.9+
 
-TOKEN = "8260796784:AAEKBN14VgBilXiW-2Xmgs_fKyougStIgpc"
-CHAT_ID = "2034051802"
+import os
+
+TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
+CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
+
 
 TZ = ZoneInfo("Europe/Minsk")
 
