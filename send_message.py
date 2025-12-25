@@ -4,8 +4,8 @@ from zoneinfo import ZoneInfo  # Python 3.9+
 
 import os
 
-TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
-CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
+TOKEN = os.environ["TELEGRAM_BOT_TOKEN"].strip()
+CHAT_ID = os.environ["TELEGRAM_CHAT_ID"].strip()
 
 
 TZ = ZoneInfo("Europe/Minsk")
